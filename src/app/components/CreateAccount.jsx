@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import signUp from "@/firebase/auth/signup";
+import { signUp } from "../../firebase/auth/signup";
 
 const CreateAccount = () => {
   const [email, setEmail] = React.useState("");

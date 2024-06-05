@@ -1,15 +1,14 @@
 "use client";
 import React, { useEffect } from "react";
-import { useAuthContext } from "@/context/AuthContext";
-import { LogOut } from "@/context/AuthContext";
+import { useAuthContext } from "../../context/AuthContext";
+import { LogOut } from "../../context/AuthContext";
 import { useRouter } from "next/navigation";
 
 //* Left off at communication with DB
 //  https://www.freecodecamp.org/news/create-full-stack-app-with-nextjs13-and-firebase/
 const page = () => {
   const { user } = useAuthContext();
-  // console.log(useAuthContext());
-  // const { }
+  // Example of page thats exclusive for logged in users with log out button
   const router = useRouter();
 
   React.useEffect(() => {
