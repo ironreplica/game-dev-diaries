@@ -27,7 +27,14 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 bg-lightest flex justify-between z-10">
       <div className="flex w-fit  my-auto">
-        <Image src={"/next.svg"} width={100} height={100} className=" mx-4" />
+        <Image
+          alt="logo"
+          priority
+          src={"/next.svg"}
+          width={100}
+          height={100}
+          className=" mx-4"
+        />
         <Link href={"/"} className="text-2xl text-darkest font-semibold px-4 ">
           Game Dev Diaries
         </Link>

@@ -1,39 +1,63 @@
+"use client";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import signIn from "@/firebase/auth/signin";
 
 const CreateAccount = () => {
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const router = useRouter();
+
+  const handleForm = async (event) => {
+    event.preventDefault();
+
+    const { result, error } = await signIn(email, password);
+
+    if (error) {
+      return console.log(error);
+    }
+
+    console.log(result);
+    return router.push("/");
+  };
+
   return (
     <section>
       <div className="w-[100%] bg-darkest h-[100vh] flex justify-center pt-[100px] text-lg">
         <div className="mb-4 flex flex-col">
+          <h1 className=" font-semibold tracking-wide text-2xl mx-auto mb-3">
+            Login into Account
+          </h1>
           <form
-            action=""
+            onSubmit={handleForm}
             className="flex flex-col text-center h-[200px] w-[500px] bg-dark border border-light rounded"
           >
             <label
               className=" text-lightest font-semibold mb-2 "
-              for="username"
+              htmlFor="email"
             >
-              Username
+              Email
             </label>
 
             <input
               type="text"
-              name="username"
-              placeholder="JohnSmith"
+              onChange={(e) => setEmail(e.target.value)}
+              name="email"
+              placeholder="example@gmail.com"
               className=" bg-darkest text-lightest w-[70%] mx-auto rounded"
             />
             <label
               className=" text-lightest font-semibold mb-2 "
-              for="username"
+              htmlFor="password"
             >
               Password
             </label>
 
             <input
+              onChange={(e) => setPassword(e.target.value)}
               type="password"
-              name="username"
-              placeholder="JohnSmith"
+              name="password"
               className=" bg-darkest text-lightest w-[70%] mx-auto rounded"
             />
             <button

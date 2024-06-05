@@ -7,6 +7,7 @@ const HeroSection = () => {
     <section className="">
       <Image
         src={"/images/logo.jpg"}
+        alt="logoLarge"
         width={150}
         height={150}
         className=" absolute top-[55px]

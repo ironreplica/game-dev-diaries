@@ -1,12 +1,10 @@
 import CreateAccount from "../components/CreateAccount";
 import Navbar from "../components/Navbar";
-import { connect } from "../../dbConfig/dbConfig.js";
-// require("dotenv").config();
+// import { connect } from "../../dbConfig/dbConfig.js";
+require("dotenv").config();
 
+//* Sign Up Route
 export default function CreateAccountPage() {
-  connect();
-  require("dotenv").config();
-
   return (
     <main>
       <Navbar />

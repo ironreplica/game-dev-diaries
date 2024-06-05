@@ -1,4 +1,6 @@
 // import { Inter } from "next/font/google";
+// import { AuthContextProvider } from "@/context/AuthContext";
+import { AuthContextProvider } from "../context/AuthContext";
 import "./globals.css";
 import { Roboto } from "next/font/google";
 import { Lora } from "next/font/google";
@@ -29,7 +31,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={robotoMono.className}>{children}</body>
+      <body className={robotoMono.className}>
+        <AuthContextProvider>{children}</AuthContextProvider>
+      </body>
     </html>
   );
 }

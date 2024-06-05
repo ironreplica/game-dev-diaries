@@ -7,6 +7,7 @@ const UpdateCard = ({ title, description, creator }) => {
       <div className=" flex flex-row h-[50px] w-full border border-t-0 border-l-0 border-r-0 border-light ">
         <div className="mx-auto flex flex-row text-center my-auto align-middle top-[50%]">
           <Image
+            alt="profile_photo"
             src={"/images/profile.jpg"}
             width={45}
             height={45}
@@ -16,10 +17,11 @@ const UpdateCard = ({ title, description, creator }) => {
         </div>
       </div>
       <Image
+        alt="screenshot"
         className="mx-auto my-5 border border-light rounded"
         src={"/images/post-image.png"}
         width={500}
-        height={0}
+        height={500}
       />
       <div className="h-[200px]">
         <h1 className=" font-semibold text-xl border border-t-0 border-l-0 border-r-0 w-fit mx-auto mb-3">
