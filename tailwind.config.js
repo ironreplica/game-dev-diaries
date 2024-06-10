@@ -7,16 +7,19 @@ module.exports = {
   ],
   theme: {
     extend: {
+      maxHeight: {
+        autocomplete: "15rem",
+      },
       fontFamily: {
         sans: ["var(--font-roboto)"],
       },
     },
     colors: {
-      lightest: "#cad2c5",
-      light: "#84a98c",
-      med: "#52796f",
-      dark: "#354f52",
-      darkest: "#2f3e46",
+      lightest: "#b3b4bd",
+      light: "0a21c0",
+      med: "#050a44",
+      dark: "#2c2e3a",
+      darkest: "#141619",
     },
     extend: {
       backgroundImage: {

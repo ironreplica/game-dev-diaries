@@ -4,12 +4,12 @@ import Link from "next/link";
 import Navlink from "./Navlink";
 import Image from "next/image";
 import { useAuthContext } from "../../context/AuthContext";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const navLinks = [
   {
     title: "Explore Devlogs",
-    path: "#",
+    path: "/explore",
   },
   {
     title: "Developers",
@@ -17,15 +17,15 @@ const navLinks = [
   },
   {
     title: "Create",
-    path: "#",
+    path: "/create",
   },
   {
     title: "View Profile",
-    path: "#",
+    path: "/profile",
   },
   {
     title: "Logout",
-    path: "#",
+    path: "/logout",
   },
 ];
 
