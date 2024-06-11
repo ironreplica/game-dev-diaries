@@ -16,10 +16,12 @@ module.exports = {
     },
     colors: {
       lightest: "#b3b4bd",
-      light: "0a21c0",
+      light: "#0a21c0",
       med: "#050a44",
       dark: "#2c2e3a",
       darkest: "#141619",
+      grad1: "#2c3e50",
+      grad2: "#000000",
     },
     extend: {
       backgroundImage: {

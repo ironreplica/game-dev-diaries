@@ -48,7 +48,7 @@ const TestUpdate = [
 
 const SampleFeed = () => {
   return (
-    <section className=" w-[100%] h-[1500px] bg-darkest flex flex-col">
+    <section className=" w-[100%] h-[1500px]  bg-gradient-to-br from-grad1 to-grad2 flex flex-col">
       <div>
         <h1 className=" mx-auto text-center text-2xl font-semibold tracking-wide pt-4 text-lightest pb-0 mb-0">
           Recent updates

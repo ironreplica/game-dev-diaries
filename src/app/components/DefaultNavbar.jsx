@@ -3,6 +3,7 @@ import React from "react";
 import Link from "next/link";
 import Navlink from "./Navlink";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 const navLinks = [
   {
@@ -11,7 +12,7 @@ const navLinks = [
   },
   {
     title: "Developers",
-    path: "#",
+    path: "/developers",
   },
   {
     title: "Sign In",
@@ -23,20 +24,42 @@ const navLinks = [
   },
 ];
 
+const variants = {
+  initial: {
+    opacity: 0.8,
+    scale: 1,
+  },
+  hover: {
+    opacity: 1,
+    scale: 1.1,
+  },
+  transition: {
+    duration: 1,
+  },
+};
+
 const DefaultNavbar = () => {
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-lightest flex justify-between z-10">
+    <nav className="fixed top-0 left-0 right-0 bg-darkest text-lightest flex justify-between z-10">
       <div className="flex w-fit  my-auto">
-        <Image
+        {/* <Image
           alt="logo"
           priority
           src={"/next.svg"}
           width={100}
           height={100}
           className=" mx-4"
-        />
-        <Link href={"/"} className="text-2xl text-darkest font-semibold px-4 ">
-          Game Dev Diaries
+        /> */}
+        <Link href={"/"} className="text-2xl font-semibold px-4 ">
+          <motion.h1
+            variants={variants}
+            initial="initial"
+            whileHover="hover"
+            transition="transition"
+            className="bg-gradient-to-r from-grad1  to-grad2 bg-clip-text text inline-block"
+          >
+            Game Dev Diaries
+          </motion.h1>
         </Link>
       </div>
       <div className="menu block right">
