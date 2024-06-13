@@ -33,7 +33,6 @@ export async function handleSubmit(e) {
       async () => {
         try {
           const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          console.log("script returns: " + downloadURL);
           resolve(downloadURL);
         } catch (error) {
           console.log("Error getting url: " + error);

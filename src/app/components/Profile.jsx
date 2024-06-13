@@ -5,19 +5,61 @@ import { getAuth } from "firebase/auth";
 import firebase_app from "../../firebase/config";
 // import { handleSubmit } from "../../firebase/cloud/addFile.jsx";
 import { handleSubmit } from "../../firebase/cloud/AddFile";
+import updateUserData from "../../firebase/userData/updateUserData";
+// import { framer } from "framer-motion";
+import { motion } from "framer-motion";
+
+//TODO: find a way to style the profile picture to be square and preserve the aspect ratio.
 
 //* Enter all the form data, profile picture and then add a save changes button at the bottom
 //* that pushes everything all at once.
 const auth = getAuth(firebase_app);
 
+const bioHoverVariants = {
+  onHover: {
+    opacity: 0.85,
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 24,
+    },
+  },
+  offHover: {
+    opacity: 0,
+    transition: {
+      duration: 0.2,
+    },
+  },
+};
+
 const Profile = () => {
   const [profileURL, setProfileURL] = useState("/images/blank-profile.png"); // get profile url
+  const [isHover, setIsHover] = useState(false);
 
-  console.log(auth.currentUser.displayName);
+  useEffect(() => {
+    setProfileURL(
+      // always will have one since your setting it to the blank picture
+      auth.currentUser.photoURL
+    );
+  }, []);
 
   const handleUploadSubmit = async (e) => {
-    const fileURL = await handleSubmit(e);
-    setProfileURL(fileURL);
+    e.preventDefault();
+    if (e.target[0]?.files[0]) {
+      await handleSubmit(e).then(async function (fileurl) {
+        await updateUserData(auth.currentUser.displayName, fileurl)
+          .then(function () {
+            console.log(auth.currentUser.photoURL);
+            setProfileURL(fileurl);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      });
+    }
+    // setProfileURL(fileURL);
+    // console.log(profileURL);
+    // console.log("User PFP " + auth.currentUser.photoURL);
   };
   return (
     <section className="w-full h-[1200px] bg-darkest ">
@@ -42,7 +84,7 @@ const Profile = () => {
             id="profile_photo"
             loading="eager"
             alt="profile_photo"
-            src={profileURL}
+            src={profileURL ? profileURL : "/images/blank-profile.png"}
             width={45}
             height={45}
             className=" rounded-[50%]"
@@ -70,15 +112,33 @@ const Profile = () => {
               <h1 className=" text-lightest mx-auto my-auto">Pixel</h1>
             </div>
           </div>
-          <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quas nulla
-            nobis soluta alias nihil? Nihil facilis doloremque officiis quos eos
-            itaque hic natus maiores amet unde repellat ut quidem magni
-            possimus, dicta similique inventore quod aliquid esse! Quos sequi
-            totam corrupti sunt rerum non. Quae nulla officiis nostrum minus
-            placeat asperiores dolore et accusantium repellat.
-          </p>
-          <div>
+          <div className="p-wrapper flex h-fit w-fit relative">
+            <motion.p
+              className=""
+              whileHover={() => {
+                setIsHover(true);
+                console.log("hovering");
+              }}
+            >
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quas
+              nulla nobis soluta alias nihil? Nihil facilis doloremque officiis
+              quos eos itaque hic natus maiores amet unde repellat ut quidem
+              magni possimus, dicta similique inventore quod aliquid esse! Quos
+              sequi totam corrupti sunt rerum non. Quae nulla officiis nostrum
+              minus placeat asperiores dolore et accusantium repellat.
+            </motion.p>
+            <motion.div
+              variants={bioHoverVariants}
+              animate={isHover ? "onHover" : "offHover"}
+              initial={"offHover"}
+              className=" bg-darkest rounded-lg  z-15 w-[100%] h-[100%] absolute flex"
+            >
+              <button className="w-fit h-fit mx-auto my-auto">
+                <h1 className="text-2xl font-semibold">Edit Text</h1>
+              </button>
+            </motion.div>
+          </div>
+          <div className="block">
             <form className="form" onSubmit={handleUploadSubmit}>
               <div className="flex items-center justify-center w-full">
                 <label

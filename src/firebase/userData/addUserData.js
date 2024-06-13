@@ -7,7 +7,8 @@ import {
   Timestamp,
   GeoPoint,
 } from "firebase/firestore";
-import { useUser } from "../auth/useUser";
+import { getAuth } from "firebase/auth";
+// import { useUser } from "../auth/useUser";
 
 const db = getFirestore(firebase_app);
 
@@ -16,21 +17,38 @@ const db = getFirestore(firebase_app);
 //   sendData();
 // }
 
-export const writeToFirstore = () => {
-  const { user } = useUser();
+export const writeToFirstore = (
+  bio,
+  contactEmail,
+  following,
+  categoryTags,
+  followers,
+  posts
+) => {
+  console.log("testing!");
+  const auth = getAuth(firebase_app);
+  const user = auth.currentUser;
+
+  // TODO: Add a call to the db, dont pass in dynamic data like followers and posts.
+  bio = bio || "Empty Bio...";
+  contactEmail = contactEmail || "No Contact";
+  following = following || [];
+  categoryTags = categoryTags || [];
+  followers = followers || [];
+  posts = posts || 0;
+  // const { user } = useUser();
 
   const sendData = async () => {
     try {
-      const userDoc = doc(db, collection, user.id);
+      console.log("sending data...");
+      const userDoc = doc(db, "users", user.uid);
       await setDoc(userDoc, {
-        string_data: "Benjamin Carlson",
-        number_data: 2,
-        boolean_data: true,
-        map_data: { stringInMap: "Hi", numberInMap: 7 },
-        array_data: ["text", 4],
-        null_data: null,
-        time_stamp: Timestamp.fromDate(new Date("December 17, 1995 03:24:00")),
-        geo_point: new GeoPoint(34.714322, -131.468435),
+        biography: bio,
+        contact_email: contactEmail,
+        followed_users: following,
+        followers_array: followers,
+        categories: categoryTags,
+        time_stamp: Timestamp.fromDate(Date.now()),
       });
       alert("data successfully pushed.");
     } catch (error) {
