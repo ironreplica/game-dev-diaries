@@ -2,23 +2,29 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signUp } from "../../firebase/auth/signup";
+// import { signUp } from "../../firebase/auth/signup";
+import signUp from "../../firebase/auth/signup";
 
 const CreateAccount = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [userName, setUserName] = React.useState("");
   const router = useRouter();
 
   const handleForm = async (event) => {
     event.preventDefault();
-    const { result, error } = await signUp(email, password);
+    const { result, error } = await signUp(userName, email, password);
 
     if (error) {
       return console.log(error); // stop the function here if theres an error
     }
 
     // else succesful
-    console.log(result);
+    if (result === undefined) {
+      alert("Invalid Credentials, try a different email or password.");
+      return;
+    }
+    alert("Successfully created an account!");
     return router.push("/login"); // redirect to a page where the user is logged in
   };
 
@@ -31,8 +37,25 @@ const CreateAccount = () => {
           </h1>
           <form
             onSubmit={handleForm}
-            className="flex flex-col text-center h-fit py-5 w-[500px] bg-dark border border-light rounded"
+            className="flex flex-col text-center h-fit py-5 w-[500px] bg-gradient-to-r from-grad1 to-dark rounded"
           >
+            <label
+              className=" text-lightest font-semibold mb-2 "
+              htmlFor="username"
+            >
+              Username
+            </label>
+
+            <input
+              type="text"
+              // required={true}
+              onChange={(e) => setUserName(e.target.value)}
+              required
+              id="username"
+              name="username"
+              placeholder="Username"
+              className=" bg-darkest text-lightest w-[70%] mx-auto rounded"
+            />
             <label
               className=" text-lightest font-semibold mb-2 "
               htmlFor="email"
@@ -43,6 +66,7 @@ const CreateAccount = () => {
             <input
               type="email"
               // required={true}
+              required
               onChange={(e) => setEmail(e.target.value)}
               id="email"
               name="email"
@@ -73,6 +97,7 @@ const CreateAccount = () => {
             <input
               type="password"
               name="password"
+              required
               // required={true}
               onChange={(e) => setPassword(e.target.value)}
               id="password"

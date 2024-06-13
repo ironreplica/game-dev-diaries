@@ -6,6 +6,7 @@ import { useAuthContext } from "../../context/AuthContext";
 import { useRouter } from "next/navigation";
 import Navbar from "../components/Navbar";
 import Profile from "../components/Profile";
+import Developers from "../components/Developers";
 
 const page = () => {
   const { user } = useAuthContext();
@@ -17,8 +18,8 @@ const page = () => {
   }, [user]);
   return (
     <main>
-      <Navbar />;
-      <Profile />
+      <Navbar />
+      <Developers />
     </main>
   );
 };

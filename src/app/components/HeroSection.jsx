@@ -14,29 +14,43 @@ const HeroSection = () => {
           autoPlay
           muted
           loop
-          className="w-full h-auto relative opacity-70 object-cover"
+          className="w-full h-auto relative opacity-30 object-cover"
           preload="auto"
         >
           <source src="/bg-video.mp4" type="video/mp4" />
           Your browser does not support this video.
         </video>
-        <div className=" pt-[55px] w-full h-full bg-opacity-50 bg-darkest flex flex-row z-15 absolute top-0 right-0 left-0">
+        <div className=" pt-[55px] w-full h-full  bg-opacity-70 flex flex-row z-15 absolute top-0 right-0 left-0">
           <div className="flex flex-col w-full px-10 py-10 justify-center text-center text-4xl text-lightest font-semibold">
             <h1 className="mx-auto my-auto tracking-wide opacity-100 text-[white]">
               From Concept to Console: <br></br> Document Your Game Dev Odyssey
             </h1>
-            <Link href={"#"}>
-              <motion.button
-                initial={{ scale: 1 }}
-                // animate={{  }}
-                whileHover={{ scale: 1.2 }}
-                transition={{ duration: 0.7, type: "spring" }}
-                className="bg-med p-4 rounded text-xl "
-                type="submit"
-              >
-                View Games
-              </motion.button>
-            </Link>
+            <div className="flex flex-row mx-auto w-full justify-evenly">
+              <Link href={"#"}>
+                <motion.button
+                  initial={{ scale: 1 }}
+                  // animate={{  }}
+                  whileHover={{ scale: 1.2 }}
+                  transition={{ duration: 0.7, type: "spring" }}
+                  className="bg-med p-4 rounded text-xl "
+                  type="submit"
+                >
+                  View Games
+                </motion.button>
+              </Link>
+              <Link href={"/developers"}>
+                <motion.button
+                  initial={{ scale: 1 }}
+                  // animate={{  }}
+                  whileHover={{ scale: 1.2 }}
+                  transition={{ duration: 0.7, type: "spring" }}
+                  className="bg-med p-4 rounded text-xl "
+                  type="submit"
+                >
+                  View Developers
+                </motion.button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

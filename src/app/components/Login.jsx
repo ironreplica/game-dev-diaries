@@ -18,7 +18,6 @@ const CreateAccount = () => {
       return console.log(error);
     }
 
-    console.log(result);
     return router.push("/");
   };
 
@@ -31,7 +30,7 @@ const CreateAccount = () => {
           </h1>
           <form
             onSubmit={handleForm}
-            className="flex flex-col text-center h-[200px] w-[500px] bg-dark border border-light rounded"
+            className="flex flex-col text-center h-[200px] w-[500px] bg-gradient-to-r from-grad1 to-dark rounded"
           >
             <label
               className=" text-lightest font-semibold mb-2 "

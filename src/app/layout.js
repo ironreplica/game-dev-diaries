@@ -31,7 +31,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={robotoMono.className}>
+      <body className={roboto.className + ""}>
         <AuthContextProvider>{children}</AuthContextProvider>
       </body>
     </html>
