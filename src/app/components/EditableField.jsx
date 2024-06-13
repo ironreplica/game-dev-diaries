@@ -54,7 +54,6 @@ const EditableField = ({ children, popupText, rounded, image }) => {
               defaultValue={children.props.children}
             ></input>
           )}
-          {/* {children.type === Image && <div className="text-3xl">IMAGE</div>} */}
         </div>
       ) : (
         children
@@ -73,6 +72,7 @@ const EditableField = ({ children, popupText, rounded, image }) => {
             <div>
               <button
                 className="w-fit h-fit mx-auto my-auto"
+                type="button"
                 onClick={() => {
                   fileInputRef.current.click();
                 }}
@@ -80,6 +80,7 @@ const EditableField = ({ children, popupText, rounded, image }) => {
                 <h1 className="text-xl font-semibold">Edit {popupText}</h1>
               </button>
               <input
+                multiple={false}
                 id="files"
                 type="file"
                 ref={fileInputRef}

@@ -27,8 +27,8 @@ const Profile = () => {
 
   const handleUploadSubmit = async (e) => {
     e.preventDefault();
-    console.log(e);
-    if (e.target[0]?.files[0]) {
+    console.log(e.target[1]);
+    if (e.target[1]?.files[0]) {
       await handleSubmit(e).then(async function (fileurl) {
         await updateUserData(auth.currentUser.displayName, fileurl)
           .then(function () {
@@ -145,7 +145,7 @@ const Profile = () => {
                   <input id="dropzone-file" type="file" className="hidden" />
                 </label>
               </div>
-              {/* <button type="submit">SUBMIT</button> */}
+              <button type="submit">SUBMIT</button>
             </div>
           </div>
         </form>
