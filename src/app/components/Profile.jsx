@@ -8,33 +8,15 @@ import { handleSubmit } from "../../firebase/cloud/AddFile";
 import updateUserData from "../../firebase/userData/updateUserData";
 // import { framer } from "framer-motion";
 import { motion } from "framer-motion";
-
+import EditableField from "../components/EditableField";
 //TODO: find a way to style the profile picture to be square and preserve the aspect ratio.
 
 //* Enter all the form data, profile picture and then add a save changes button at the bottom
 //* that pushes everything all at once.
 const auth = getAuth(firebase_app);
 
-const bioHoverVariants = {
-  onHover: {
-    opacity: 0.85,
-    transition: {
-      type: "spring",
-      stiffness: 300,
-      damping: 24,
-    },
-  },
-  offHover: {
-    opacity: 0,
-    transition: {
-      duration: 0.2,
-    },
-  },
-};
-
 const Profile = () => {
   const [profileURL, setProfileURL] = useState("/images/blank-profile.png"); // get profile url
-  const [isHover, setIsHover] = useState(false);
 
   useEffect(() => {
     setProfileURL(
@@ -45,11 +27,11 @@ const Profile = () => {
 
   const handleUploadSubmit = async (e) => {
     e.preventDefault();
+    console.log(e);
     if (e.target[0]?.files[0]) {
       await handleSubmit(e).then(async function (fileurl) {
         await updateUserData(auth.currentUser.displayName, fileurl)
           .then(function () {
-            console.log(auth.currentUser.photoURL);
             setProfileURL(fileurl);
           })
           .catch(function (error) {
@@ -65,8 +47,9 @@ const Profile = () => {
     <section className="w-full h-[1200px] bg-darkest ">
       <div className="pt-[55px] text-center flex flex-col bg-dark text-2xl">
         <h1>View Profile</h1>
-        <div className="flex flex-row w-fit mx-auto my-3">
-          {/* {useEffect(() => {
+        <form className="form" onSubmit={handleUploadSubmit}>
+          <div className="flex flex-row justify-between w-fit mx-auto my-3">
+            {/* {useEffect(() => {
             console.log(profileURL);
             document.getElementById("profile_photo").src =
               profileURL === "url" ? "/images/blank-profile.png" : profileURL;
@@ -80,66 +63,56 @@ const Profile = () => {
             //   className=" rounded-[50%]"
             // />
           }, [])} */}
-          <Image
-            id="profile_photo"
-            loading="eager"
-            alt="profile_photo"
-            src={profileURL ? profileURL : "/images/blank-profile.png"}
-            width={45}
-            height={45}
-            className=" rounded-[50%]"
-          />
+            <EditableField popupText={"pic"} rounded={true} image={true}>
+              <Image
+                id="profile_photo"
+                loading="eager"
+                alt="profile_photo"
+                src={profileURL ? profileURL : "/images/blank-profile.png"}
+                width={60}
+                height={60}
+                className=" rounded-[50%]"
+              />
+            </EditableField>
 
-          <h1 className="my-auto ml-2 text-3xl font-semibold ">
-            {auth.currentUser.displayName}
-          </h1>
-        </div>
-        <h2 className="text-lightest my-auto text-base mb-3">
-          {auth.currentUser.email}
-        </h2>
-        <div className="w-[500px] text-xl mx-auto flex flex-col ">
-          <div className="tags w-full flex flex-row justify-evenly">
-            <div className="w-[100px] h-fit rounded-lg bg-med flex">
-              <h1 className=" text-lightest mx-auto my-auto">FPS</h1>
-            </div>
-            <div className="w-[100px] h-fit rounded-lg bg-med flex">
-              <h1 className=" text-lightest mx-auto my-auto">Survival</h1>
-            </div>
-            <div className="w-[100px] h-fit rounded-lg bg-med flex">
-              <h1 className=" text-lightest mx-auto my-auto">Voxel</h1>
-            </div>
-            <div className="w-[100px] h-fit rounded-lg bg-med flex">
-              <h1 className=" text-lightest mx-auto my-auto">Pixel</h1>
-            </div>
+            <EditableField popupText={"Username"}>
+              <h1 className="my-auto ml-2 text-3xl font-semibold ">
+                {auth.currentUser.displayName}
+              </h1>
+            </EditableField>
           </div>
-          <div className="p-wrapper flex h-fit w-fit relative">
-            <motion.p
-              className=""
-              whileHover={() => {
-                setIsHover(true);
-                console.log("hovering");
-              }}
-            >
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quas
-              nulla nobis soluta alias nihil? Nihil facilis doloremque officiis
-              quos eos itaque hic natus maiores amet unde repellat ut quidem
-              magni possimus, dicta similique inventore quod aliquid esse! Quos
-              sequi totam corrupti sunt rerum non. Quae nulla officiis nostrum
-              minus placeat asperiores dolore et accusantium repellat.
-            </motion.p>
-            <motion.div
-              variants={bioHoverVariants}
-              animate={isHover ? "onHover" : "offHover"}
-              initial={"offHover"}
-              className=" bg-darkest rounded-lg  z-15 w-[100%] h-[100%] absolute flex"
-            >
-              <button className="w-fit h-fit mx-auto my-auto">
-                <h1 className="text-2xl font-semibold">Edit Text</h1>
-              </button>
-            </motion.div>
-          </div>
-          <div className="block">
-            <form className="form" onSubmit={handleUploadSubmit}>
+          <h2 className="text-lightest my-auto text-base mb-3">
+            {auth.currentUser.email}
+          </h2>
+          <div className="w-[500px] text-xl mx-auto flex flex-col ">
+            <div className="tags w-full flex flex-row justify-evenly">
+              <div className="w-[100px] h-fit rounded-lg bg-med flex">
+                <h1 className=" text-lightest mx-auto my-auto">FPS</h1>
+              </div>
+              <div className="w-[100px] h-fit rounded-lg bg-med flex">
+                <h1 className=" text-lightest mx-auto my-auto">Survival</h1>
+              </div>
+              <div className="w-[100px] h-fit rounded-lg bg-med flex">
+                <h1 className=" text-lightest mx-auto my-auto">Voxel</h1>
+              </div>
+              <div className="w-[100px] h-fit rounded-lg bg-med flex">
+                <h1 className=" text-lightest mx-auto my-auto">Pixel</h1>
+              </div>
+            </div>
+            <div>
+              <EditableField popupText={"Bio"}>
+                <p>
+                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quas
+                  nulla nobis soluta alias nihil? Nihil facilis doloremque
+                  officiis quos eos itaque hic natus maiores amet unde repellat
+                  ut quidem magni possimus, dicta similique inventore quod
+                  aliquid esse! Quos sequi totam corrupti sunt rerum non. Quae
+                  nulla officiis nostrum minus placeat asperiores dolore et
+                  accusantium repellat.
+                </p>
+              </EditableField>
+            </div>
+            <div className="block">
               <div className="flex items-center justify-center w-full">
                 <label
                   htmlFor="dropzone-file"
@@ -172,10 +145,10 @@ const Profile = () => {
                   <input id="dropzone-file" type="file" className="hidden" />
                 </label>
               </div>
-              <button type="submit">SUBMIT</button>
-            </form>
+              {/* <button type="submit">SUBMIT</button> */}
+            </div>
           </div>
-        </div>
+        </form>
       </div>
     </section>
   );
