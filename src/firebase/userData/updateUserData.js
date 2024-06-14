@@ -7,12 +7,12 @@ import { writeToFirstore } from "../userData/addUserData";
 const auth = getAuth(firebase_app);
 
 // * This function should never return anything.
-export default async function updateUserData(
+export default async function updateUserData({
   name = auth.currentUser.displayName,
   profilePic = auth.currentUser.photoURL,
-  bio = "test! this is my bio!", // call the addUserDataFunction
-  tags
-) {
+  bio, // call the addUserDataFunction
+  tags,
+}) {
   // * Get username from database, see if new one is orignal
 
   // * Upload new profile pic to photourl

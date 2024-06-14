@@ -23,11 +23,10 @@ const bioHoverVariants = {
   },
 };
 
-const EditableField = ({ children, popupText, rounded, image }) => {
+const EditableField = ({ children, popupText, rounded, image, refProp }) => {
   // const [isEditing]
   const [isHover, setIsHover] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const fileInputRef = useRef();
   return (
     <div
       className={`p-wrapper  flex relative `}
@@ -74,18 +73,18 @@ const EditableField = ({ children, popupText, rounded, image }) => {
                 className="w-fit h-fit mx-auto my-auto"
                 type="button"
                 onClick={() => {
-                  fileInputRef.current.click();
+                  if (refProp) refProp.current.click();
                 }}
               >
                 <h1 className="text-xl font-semibold">Edit {popupText}</h1>
               </button>
-              <input
+              {/* <input
                 multiple={false}
                 id="files"
                 type="file"
                 ref={fileInputRef}
                 className="hidden"
-              />
+              /> */}
             </div>
           ) : (
             <button

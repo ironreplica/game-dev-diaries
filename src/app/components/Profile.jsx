@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { getAuth } from "firebase/auth";
 import firebase_app from "../../firebase/config";
@@ -17,6 +17,7 @@ const auth = getAuth(firebase_app);
 
 const Profile = () => {
   const [profileURL, setProfileURL] = useState("/images/blank-profile.png"); // get profile url
+  const inputButtonRef = useRef();
 
   useEffect(() => {
     setProfileURL(
@@ -25,30 +26,61 @@ const Profile = () => {
     );
   }, []);
 
-  const handleUploadSubmit = async (e) => {
-    e.preventDefault();
-    console.log(e.target[1]);
-    if (e.target[1]?.files[0]) {
+  const getFileURL = async (e) => {
+    // TODO: RETURN A NEW PROMISE
+    if (e.target[0]?.files[0]) {
       await handleSubmit(e).then(async function (fileurl) {
-        await updateUserData(auth.currentUser.displayName, fileurl)
-          .then(function () {
-            setProfileURL(fileurl);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+        console.log("submitting image");
+        return fileurl;
       });
     }
-    // setProfileURL(fileURL);
-    // console.log(profileURL);
-    // console.log("User PFP " + auth.currentUser.photoURL);
   };
+
+  const handleUploadSubmit = async (e) => {
+    e.preventDefault();
+    let bio = "Empty Bio!";
+    // Loop through form data
+    let target = e.target;
+    let formData = [];
+    const fileURL = await getFileURL(e);
+
+    console.log(fileURL);
+
+    console.log(target.length);
+    for (let i = 0; i < target.length; i++) {
+      var object = { type: target[i].type, value: target[i].value };
+      console.log(target[i].type);
+      formData.push(object);
+    }
+
+    // * If there is a new bio
+    if (formData.find((o) => o.type === "textarea")) {
+      bio = formData.find((o) => o.type === "textarea").value;
+    }
+
+    await updateUserData(auth.currentUser.displayName, fileURL);
+    // .then(function () {
+    //   setProfileURL(fileurl);
+    //   console.log(fileurl);
+    // })
+    // * If an image has been submitted
+  };
+  // setProfileURL(fileURL);
+  // console.log(profileURL);
+  // console.log("User PFP " + auth.currentUser.photoURL);
+
   return (
     <section className="w-full h-[1200px] bg-darkest ">
       <div className="pt-[55px] text-center flex flex-col bg-dark text-2xl">
         <h1>View Profile</h1>
         <form className="form" onSubmit={handleUploadSubmit}>
           <div className="flex flex-row justify-between w-fit mx-auto my-3">
+            <input
+              id="dropzone-file"
+              ref={inputButtonRef}
+              type="file"
+              className="hidden"
+            />
             {/* {useEffect(() => {
             console.log(profileURL);
             document.getElementById("profile_photo").src =
@@ -63,7 +95,12 @@ const Profile = () => {
             //   className=" rounded-[50%]"
             // />
           }, [])} */}
-            <EditableField popupText={"pic"} rounded={true} image={true}>
+            <EditableField
+              popupText={"pic"}
+              rounded={true}
+              image={true}
+              refProp={inputButtonRef}
+            >
               <Image
                 id="profile_photo"
                 loading="eager"
@@ -142,12 +179,11 @@ const Profile = () => {
                       SVG, PNG, JPG or GIF (MAX. 800x400px)
                     </p>
                   </div>
-                  <input id="dropzone-file" type="file" className="hidden" />
                 </label>
               </div>
-              <button type="submit">SUBMIT</button>
             </div>
           </div>
+          <button type="submit">SUBMIT</button>
         </form>
       </div>
     </section>

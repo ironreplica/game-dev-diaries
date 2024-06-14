@@ -48,7 +48,7 @@ export const writeToFirstore = (
         followed_users: following,
         followers_array: followers,
         categories: categoryTags,
-        time_stamp: Timestamp.fromDate(Date.now()),
+        time_stamp: Date.now(),
       });
       alert("data successfully pushed.");
     } catch (error) {
