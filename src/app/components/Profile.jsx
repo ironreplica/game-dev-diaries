@@ -17,6 +17,7 @@ const auth = getAuth(firebase_app);
 
 const Profile = () => {
   const [profileURL, setProfileURL] = useState("/images/blank-profile.png"); // get profile url
+  const [bio, setBio] = useState("");
   const inputButtonRef = useRef();
 
   useEffect(() => {
@@ -27,43 +28,47 @@ const Profile = () => {
   }, []);
 
   const getFileURL = async (e) => {
-    // TODO: RETURN A NEW PROMISE
-    if (e.target[0]?.files[0]) {
-      await handleSubmit(e).then(async function (fileurl) {
-        console.log("submitting image");
-        return fileurl;
-      });
-    }
+    // TODO: RETURN A NEW PROMISE, BIO WONT UPDATE
+    return new Promise((resolve, reject) => {
+      console.log(e.target[0]?.files[0]);
+      if (e.target[0]?.files[0]) {
+        // console.log("calling submit image");
+
+        handleSubmit(e).then(async function (fileurl) {
+          // console.log("submitting image");
+          resolve(fileurl);
+        });
+      }
+    });
   };
 
   const handleUploadSubmit = async (e) => {
     e.preventDefault();
-    let bio = "Empty Bio!";
     // Loop through form data
     let target = e.target;
     let formData = [];
     const fileURL = await getFileURL(e);
 
-    console.log(fileURL);
+    // console.log(fileURL);
 
-    console.log(target.length);
+    // * Get all the form data in an object array
+    // console.log(target.length);
     for (let i = 0; i < target.length; i++) {
       var object = { type: target[i].type, value: target[i].value };
-      console.log(target[i].type);
+      // console.log(target[i].type);
       formData.push(object);
     }
 
     // * If there is a new bio
     if (formData.find((o) => o.type === "textarea")) {
-      bio = formData.find((o) => o.type === "textarea").value;
+      setBio(formData.find((o) => o.type === "textarea").value);
     }
-
-    await updateUserData(auth.currentUser.displayName, fileURL);
-    // .then(function () {
-    //   setProfileURL(fileurl);
-    //   console.log(fileurl);
-    // })
-    // * If an image has been submitted
+    submission();
+    // ! DATA WONT PUSH TO FIREBASE
+    async function submission() {
+      console.log(fileURL);
+      await updateUserData("", fileURL, bio);
+    }
   };
   // setProfileURL(fileURL);
   // console.log(profileURL);
@@ -138,20 +143,14 @@ const Profile = () => {
             </div>
             <div>
               <EditableField popupText={"Bio"}>
-                <p>
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quas
-                  nulla nobis soluta alias nihil? Nihil facilis doloremque
-                  officiis quos eos itaque hic natus maiores amet unde repellat
-                  ut quidem magni possimus, dicta similique inventore quod
-                  aliquid esse! Quos sequi totam corrupti sunt rerum non. Quae
-                  nulla officiis nostrum minus placeat asperiores dolore et
-                  accusantium repellat.
+                <p className=" mx-auto text-center">
+                  Write a function to call this data you filthy animal
                 </p>
               </EditableField>
             </div>
             <div className="block">
               <div className="flex items-center justify-center w-full">
-                <label
+                {/* <label
                   htmlFor="dropzone-file"
                   className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                 >
@@ -179,7 +178,7 @@ const Profile = () => {
                       SVG, PNG, JPG or GIF (MAX. 800x400px)
                     </p>
                   </div>
-                </label>
+                </label> */}
               </div>
             </div>
           </div>

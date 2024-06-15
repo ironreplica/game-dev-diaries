@@ -4,7 +4,7 @@ import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 export async function handleSubmit(e) {
   return new Promise((resolve, reject) => {
     e.preventDefault();
-    var progressPercent = 0;
+    // var progressPercent = 0;
     console.log("click");
     const file = e.target[0]?.files[0];
 
@@ -24,7 +24,7 @@ export async function handleSubmit(e) {
         const progress = Math.round(
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         );
-        progressPercent = progress;
+        // progressPercent = progress;
       },
       (error) => {
         alert(error);
