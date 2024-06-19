@@ -1,5 +1,7 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import UpdateCard from "./UpdateCard";
+import getData from "../../firebase/firestore/getData";
 
 //! Add Image for post, and creator profile picture, and post created time.
 const TestUpdate = [
@@ -46,7 +48,25 @@ const TestUpdate = [
   },
 ];
 
-const SampleFeed = () => {
+const Feed = () => {
+  const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    getPostData();
+  }, []);
+  async function getPostData() {
+    const { result, error } = await getData("posts", "posts");
+    if (error) {
+      console.log(error);
+    } else if (result) {
+      //   console.log(result.data().posts);
+      setPosts(result.data().posts);
+    }
+  }
+  console.log(posts);
+  // Get the array of posts from the database
+  // Get the last 6 from the array
+  // Push to an array
+  // Map the array
   return (
     <section className=" w-[100%] h-[1500px]  bg-void-950 flex flex-col">
       <div>
@@ -55,12 +75,15 @@ const SampleFeed = () => {
         </h1>
       </div>
       <div className="grid grid-cols-3 grid-rows-2">
-        {TestUpdate.map((update, index) => (
+        {posts.map((post, index) => (
           <UpdateCard
-            creator={update.creator}
-            title={update.title}
-            description={update.description}
-            index={index}
+            creator={post.createdBy}
+            title={post.title}
+            profileURL={post.createdByImage}
+            imageURL={post.URL}
+            description={post.description}
+            key={index}
+            createdDate={post.dateCreated}
           />
         ))}
       </div>
@@ -68,4 +91,4 @@ const SampleFeed = () => {
   );
 };
 
-export default SampleFeed;
+export default Feed;

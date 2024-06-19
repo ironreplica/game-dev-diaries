@@ -55,7 +55,7 @@ const AdminNavbar = () => {
   }, [user]);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-darkest text-lightest flex justify-between z-10">
+    <nav className="fixed top-0 left-0 right-0 bg-[black] text-stark-50 flex justify-between z-10">
       <div className="flex w-fit  my-auto">
         {/* <Image
           alt="logo"
@@ -65,13 +65,13 @@ const AdminNavbar = () => {
           height={100}
           className=" mx-4"
         /> */}
-        <Link href={"/"} className="text-2xl font-semibold px-4 ">
+        <Link href={"/"} className="text-2xl px-4 ">
           <motion.h1
             variants={variants}
             initial="initial"
             whileHover="hover"
             transition="transition"
-            className="bg-gradient-to-r from-grad1  to-grad2 bg-clip-text text inline-block"
+            className="text-stark-50 bg-gradient-to-r from-jewel-200 to-fuschia-200 bg-clip-text inline-block text-opacity-0"
           >
             Game Dev Diaries
           </motion.h1>
@@ -80,7 +80,10 @@ const AdminNavbar = () => {
       <div className="menu block right">
         <ul className="flex p-4 mt-0">
           {navLinks.map((link, index) => (
-            <li key={index}>
+            <li
+              key={index}
+              className={link.path == "/logout" ? "bg-jewel-700 rounded" : ""}
+            >
               <Navlink href={link.path} title={link.title}></Navlink>
             </li>
           ))}

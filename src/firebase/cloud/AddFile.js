@@ -1,12 +1,15 @@
 import { storage } from "../config";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { getAuth } from "firebase/auth";
+import firebase_app from "../config";
 
-export async function handleSubmit(e) {
+export async function handleSubmit(e, file) {
+  if (!getAuth(firebase_app).currentUser) return;
   return new Promise((resolve, reject) => {
     e.preventDefault();
     // var progressPercent = 0;
     console.log("click");
-    const file = e.target[0]?.files[0];
+    // const file = e.target[0]?.files[0];
 
     //* If there is not a file, return and stop the function
     if (!file) {

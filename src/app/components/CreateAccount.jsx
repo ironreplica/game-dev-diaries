@@ -30,19 +30,22 @@ const CreateAccount = () => {
 
   return (
     <section>
-      <div className="w-[100%] bg-darkest h-[100vh] flex justify-center pt-[100px] text-lg">
+      <div className="w-[100%] bg-void-950 h-[100vh] flex justify-center pt-[100px] text-lg text-stark-50">
         <div className="mb-4 flex flex-col">
-          <h1 className=" font-semibold tracking-wide text-2xl mx-auto mb-3">
+          <h1 className=" tracking-tight text-2xl mx-auto mb-3">
             Create Account
+          </h1>
+          <h1 className="w-[70%] mx-auto my-2 text-center">
+            Creating an account is the first step in unlocking your{" "}
+            <span className=" text-void-50 bg-gradient-to-r from-void-500 to-fuschia-500 text-opacity-0 bg-clip-text">
+              true potential.
+            </span>
           </h1>
           <form
             onSubmit={handleForm}
-            className="flex flex-col text-center h-fit py-5 w-[500px] bg-gradient-to-r from-grad1 to-dark rounded"
+            className=" mx-auto flex flex-col text-center h-fit py-5 w-[500px] bg-gradient-to-r from-fuschia-800 to-jewel-900 rounded"
           >
-            <label
-              className=" text-lightest font-semibold mb-2 "
-              htmlFor="username"
-            >
+            <label className=" mb-2 " htmlFor="username">
               Username
             </label>
 
@@ -54,12 +57,9 @@ const CreateAccount = () => {
               id="username"
               name="username"
               placeholder="Username"
-              className=" bg-darkest text-lightest w-[70%] mx-auto rounded"
+              className=" bg-void-950 w-[70%] mx-auto rounded"
             />
-            <label
-              className=" text-lightest font-semibold mb-2 "
-              htmlFor="email"
-            >
+            <label className=" mb-2 " htmlFor="email">
               Email
             </label>
 
@@ -71,7 +71,7 @@ const CreateAccount = () => {
               id="email"
               name="email"
               placeholder="JohnSmith@gmail.com"
-              className=" bg-darkest text-lightest w-[70%] mx-auto rounded"
+              className=" bg-void-950  w-[70%] mx-auto rounded"
             />
             {/* <label
               className=" text-lightest font-semibold mb-2 "
@@ -87,10 +87,7 @@ const CreateAccount = () => {
               placeholder="JohnSmith"
               className=" bg-darkest text-lightest w-[70%] mx-auto rounded"
             /> */}
-            <label
-              htmlFor="password"
-              className=" text-lightest font-semibold mb-2 "
-            >
+            <label htmlFor="password" className="mb-2">
               Password
             </label>
 
@@ -102,17 +99,21 @@ const CreateAccount = () => {
               onChange={(e) => setPassword(e.target.value)}
               id="password"
               placeholder=""
-              className=" bg-darkest text-lightest w-[70%] mx-auto rounded"
+              className=" bg-void-950 w-[70%] mx-auto rounded"
             />
             <button
               type="submit"
-              className=" bg-transparent hover:bg-darkest text-lightest w-fit mx-auto px-4 rounded mt-4"
+              className=" bg-jewel-700 hover:bg-jewel-800  w-fit mx-auto px-4 rounded mt-4"
             >
               Create Account
             </button>
           </form>
           <div className="w-fit h-fit mx-auto text-lg">
-            <Link href={"/login"}>Already have an account? Login here</Link>
+            <Link href={"/login"}>
+              <span className=" text-void-900 bg-void-500 text-opacity-0 bg-clip-text">
+                Already have an account? Login here
+              </span>
+            </Link>
           </div>
         </div>
       </div>

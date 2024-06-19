@@ -2,7 +2,9 @@
 import firebase_app from "../../firebase/config";
 import { useRouter } from "next/navigation";
 import { useAuthContext } from "../../context/AuthContext";
+import NewUpdateCard from "./NewUpdateCard";
 import React from "react";
+import EditableField from "./EditableField";
 import {
   getFirestore,
   doc,
@@ -42,23 +44,16 @@ const CreateDevlog = () => {
     if (user == null) router.push("/");
   }, [user]);
   return (
-    <section className="w-full h-[1200px] bg-darkest">
-      <div className="pt-[55px] text-center flex flex-col">
-        <h1 className="text-3xl underline">New post</h1>
-        <blockquote contentEditable className="w-fit text-2xl mx-auto">
-          <h1>Title</h1>
-        </blockquote>
-
-        <h2 className="text-xl">{user.name}</h2>
-        <h2>Upload Image</h2>
-        <blockquote contentEditable className="w-[400px] h-fit mx-auto">
-          <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odit unde
-            voluptatem accusantium, a id laudantium?
-          </p>
-        </blockquote>
-        <footer>6/10/2024</footer>
-        {/* <button onClick={sendData}>Create post</button> */}
+    <section className="flex flex-row">
+      <div className=" w-[100%] h-fit mx-auto bg-void-950 flex flex-col">
+        <div className="w-fit mx-auto my-10">
+          <NewUpdateCard
+            creator="user"
+            title="new update"
+            description="description!"
+            index="index"
+          />
+        </div>
       </div>
     </section>
   );

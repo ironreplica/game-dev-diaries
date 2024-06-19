@@ -4,6 +4,7 @@ import React from "react";
 // import { LogOut } from "../../context/AuthContext";
 import { useAuthContext } from "../../context/AuthContext";
 import { useRouter } from "next/navigation";
+import SignUpToday from "../components/SignUpToday";
 import Navbar from "../components/Navbar";
 import Profile from "../components/Profile";
 

@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { getAuth } from "firebase/auth";
 import firebase_app from "../../firebase/config";
+import readUserData from "../../firebase/userData/readUserData";
 // import { handleSubmit } from "../../firebase/cloud/addFile.jsx";
 import { handleSubmit } from "../../firebase/cloud/AddFile";
 import updateUserData from "../../firebase/userData/updateUserData";
@@ -18,9 +19,23 @@ const auth = getAuth(firebase_app);
 const Profile = () => {
   const [profileURL, setProfileURL] = useState("/images/blank-profile.png"); // get profile url
   const [bio, setBio] = useState("");
+
   const inputButtonRef = useRef();
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await readUserData();
+        setBio(data.biography.stringValue);
+        // console.log(data.biography.stringValue);
+      } catch (error) {
+        console.log(error);
+        setBio(
+          "This is your bio section, add whatever you like and tell us about yourself!"
+        );
+      }
+    };
+    fetchData();
     setProfileURL(
       // always will have one since your setting it to the blank picture
       auth.currentUser.photoURL
@@ -30,12 +45,10 @@ const Profile = () => {
   const getFileURL = async (e) => {
     // TODO: RETURN A NEW PROMISE, BIO WONT UPDATE
     return new Promise((resolve, reject) => {
-      console.log(e.target[0]?.files[0]);
-      if (e.target[0]?.files[0]) {
-        // console.log("calling submit image");
-
-        handleSubmit(e).then(async function (fileurl) {
-          // console.log("submitting image");
+      const file = e.target[0]?.files[0];
+      console.log(file);
+      if (file) {
+        handleSubmit(e, file).then(async function (fileurl) {
           resolve(fileurl);
         });
       }
@@ -47,15 +60,15 @@ const Profile = () => {
     // Loop through form data
     let target = e.target;
     let formData = [];
-    const fileURL = await getFileURL(e);
-
-    // console.log(fileURL);
+    let fileURL;
+    if (e.target[0]?.files[0]) {
+      fileURL = await getFileURL(e);
+    }
 
     // * Get all the form data in an object array
-    // console.log(target.length);
     for (let i = 0; i < target.length; i++) {
       var object = { type: target[i].type, value: target[i].value };
-      // console.log(target[i].type);
+
       formData.push(object);
     }
 
@@ -64,19 +77,16 @@ const Profile = () => {
       setBio(formData.find((o) => o.type === "textarea").value);
     }
     submission();
-    // ! DATA WONT PUSH TO FIREBASE
+
     async function submission() {
       console.log(fileURL);
       await updateUserData("", fileURL, bio);
     }
   };
-  // setProfileURL(fileURL);
-  // console.log(profileURL);
-  // console.log("User PFP " + auth.currentUser.photoURL);
 
   return (
-    <section className="w-full h-[1200px] bg-darkest ">
-      <div className="pt-[55px] text-center flex flex-col bg-dark text-2xl">
+    <section className="w-full h-[97vh] bg-void-950 text-stark-50 ">
+      <div className="pt-[55px] text-center flex flex-col text-2xl">
         <h1>View Profile</h1>
         <form className="form" onSubmit={handleUploadSubmit}>
           <div className="flex flex-row justify-between w-fit mx-auto my-3">
@@ -117,18 +127,16 @@ const Profile = () => {
               />
             </EditableField>
 
-            <EditableField popupText={"Username"}>
-              <h1 className="my-auto ml-2 text-3xl font-semibold ">
-                {auth.currentUser.displayName}
-              </h1>
-            </EditableField>
+            <h1 className="my-auto ml-2 text-3xl font-semibold ">
+              {auth.currentUser.displayName}
+            </h1>
           </div>
-          <h2 className="text-lightest my-auto text-base mb-3">
+          <h2 className="text-lightefst my-auto text-base mb-3">
             {auth.currentUser.email}
           </h2>
           <div className="w-[500px] text-xl mx-auto flex flex-col ">
             <div className="tags w-full flex flex-row justify-evenly">
-              <div className="w-[100px] h-fit rounded-lg bg-med flex">
+              {/* <div className="w-[100px] h-fit rounded-lg bg-med flex">
                 <h1 className=" text-lightest mx-auto my-auto">FPS</h1>
               </div>
               <div className="w-[100px] h-fit rounded-lg bg-med flex">
@@ -139,13 +147,11 @@ const Profile = () => {
               </div>
               <div className="w-[100px] h-fit rounded-lg bg-med flex">
                 <h1 className=" text-lightest mx-auto my-auto">Pixel</h1>
-              </div>
+              </div> */}
             </div>
             <div>
               <EditableField popupText={"Bio"}>
-                <p className=" mx-auto text-center">
-                  Write a function to call this data you filthy animal
-                </p>
+                <p className=" mx-auto text-center">{bio}</p>
               </EditableField>
             </div>
             <div className="block">
@@ -182,7 +188,15 @@ const Profile = () => {
               </div>
             </div>
           </div>
-          <button type="submit">SUBMIT</button>
+          <motion.button
+            className="rounded p-2 bg-jewel-700"
+            initial={{ scale: 0.9 }}
+            whileHover={{ scale: 1 }}
+            animate={{ transition: 1 }}
+            type="submit"
+          >
+            Update Profile
+          </motion.button>
         </form>
       </div>
     </section>

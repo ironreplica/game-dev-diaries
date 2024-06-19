@@ -4,13 +4,14 @@ import {
   getFirestore,
   doc,
   setDoc,
+  getDoc,
+  updateDoc,
   Timestamp,
+  collection,
   GeoPoint,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 // import { useUser } from "../auth/useUser";
-
-const db = getFirestore(firebase_app);
 
 // const addData = () => {
 //   const { user } = useUser();
@@ -25,8 +26,10 @@ export const writeToFirstore = (
   followers,
   posts
 ) => {
-  console.log("testing!");
+  const db = getFirestore(firebase_app);
+
   const auth = getAuth(firebase_app);
+  if (auth.currentUser === null) return;
   const user = auth.currentUser;
 
   // TODO: Add a call to the db, dont pass in dynamic data like followers and posts.
@@ -42,14 +45,32 @@ export const writeToFirstore = (
     try {
       console.log("sending data...");
       const userDoc = doc(db, "users", user.uid);
-      await setDoc(userDoc, {
-        biography: bio,
-        contact_email: contactEmail,
-        followed_users: following,
-        followers_array: followers,
-        categories: categoryTags,
-        time_stamp: Date.now(),
-      });
+      const docSnap = await getDoc(userDoc);
+      if (docSnap.exists()) {
+        // * If data ALREADY exists
+        const newData = {
+          biography: bio,
+          contact_email: contactEmail,
+          followed_users: following,
+          followers_array: followers,
+          categories: categoryTags,
+          time_stamp: Date.now(),
+        };
+        await updateDoc(userDoc, newData);
+        alert("data successfully pushed.");
+      } else if (!docSnap.exists()) {
+        // * If there is no user data
+        console.log("setting doc");
+
+        await setDoc(userDoc, {
+          biography: bio,
+          contact_email: contactEmail,
+          followed_users: following,
+          followers_array: followers,
+          categories: categoryTags,
+          time_stamp: Date.now(),
+        });
+      }
       alert("data successfully pushed.");
     } catch (error) {
       console.log(error);
