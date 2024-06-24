@@ -78,6 +78,7 @@ const Feed = () => {
         {posts.map((post, index) => (
           <UpdateCard
             creator={post.createdBy}
+            link={post.userID}
             title={post.title}
             profileURL={post.createdByImage}
             imageURL={post.URL}

@@ -17,22 +17,23 @@ import EditableField from "../components/EditableField";
 const auth = getAuth(firebase_app);
 
 const Profile = () => {
-  const [profileURL, setProfileURL] = useState("/images/blank-profile.png"); // get profile url
-  const [bio, setBio] = useState("");
-
+  const [profileURL, setProfileURL] = useState(
+    "https://firebasestorage.googleapis.com/v0/b/game-dev-diaries.appspot.com/o/files%2Fblank-profile.png?alt=media&token=720a666a-3218-4650-8cfe-c17127bbf28a"
+  ); // get profile url
+  const [userBio, setUserBio] = useState("");
+  // console.log(auth.currentUser.photoURL);
   const inputButtonRef = useRef();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await readUserData();
-        setBio(data.biography.stringValue);
+        setUserBio(data.biography.stringValue);
+        // console.log("useeffect");
+        // console.log(data.biography.stringValue);
         // console.log(data.biography.stringValue);
       } catch (error) {
         console.log(error);
-        setBio(
-          "This is your bio section, add whatever you like and tell us about yourself!"
-        );
       }
     };
     fetchData();
@@ -46,7 +47,7 @@ const Profile = () => {
     // TODO: RETURN A NEW PROMISE, BIO WONT UPDATE
     return new Promise((resolve, reject) => {
       const file = e.target[0]?.files[0];
-      console.log(file);
+      // console.log(file);
       if (file) {
         handleSubmit(e, file).then(async function (fileurl) {
           resolve(fileurl);
@@ -54,7 +55,6 @@ const Profile = () => {
       }
     });
   };
-
   const handleUploadSubmit = async (e) => {
     e.preventDefault();
     // Loop through form data
@@ -67,20 +67,22 @@ const Profile = () => {
 
     // * Get all the form data in an object array
     for (let i = 0; i < target.length; i++) {
-      var object = { type: target[i].type, value: target[i].value };
+      var object = await { type: target[i].type, value: target[i].value };
+      console.log(object);
 
       formData.push(object);
     }
-
     // * If there is a new bio
     if (formData.find((o) => o.type === "textarea")) {
-      setBio(formData.find((o) => o.type === "textarea").value);
+      const bioText = formData.find((o) => o.type === "textarea").value;
+      setUserBio(bioText);
+      console.log(userBio);
     }
     submission();
 
     async function submission() {
-      console.log(fileURL);
-      await updateUserData("", fileURL, bio);
+      // console.log(fileURL);
+      await updateUserData(fileURL, userBio);
     }
   };
 
@@ -151,7 +153,7 @@ const Profile = () => {
             </div>
             <div>
               <EditableField popupText={"Bio"}>
-                <p className=" mx-auto text-center">{bio}</p>
+                <p className=" mx-auto text-center">{userBio}</p>
               </EditableField>
             </div>
             <div className="block">

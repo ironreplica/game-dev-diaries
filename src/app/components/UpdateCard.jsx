@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 // Pass in image, date modified and creator and creator profile picture
 const UpdateCard = ({
   title,
@@ -8,6 +9,7 @@ const UpdateCard = ({
   profileURL,
   imageURL,
   createdDate,
+  link,
 }) => {
   return (
     <div className="flex flex-col w-[500x] h-auto m-10 text-stark-50  text-center">
@@ -15,12 +17,18 @@ const UpdateCard = ({
         <div className="mx-auto flex flex-row text-center my-auto align-middle top-[50%]">
           <Image
             alt="profile_photo"
-            src={profileURL}
+            src={
+              profileURL != null
+                ? profileURL
+                : "https://firebasestorage.googleapis.com/v0/b/game-dev-diaries.appspot.com/o/files%2Fblank-profile.png?alt=media&token=720a666a-3218-4650-8cfe-c17127bbf28a"
+            }
             width={60}
             height={60}
             className=" rounded-[50%]"
           />
-          <h1 className="align-middle text-2xl my-auto pl-4">{creator}</h1>
+          <Link href={`/users/${link}`}>
+            <h1 className="align-middle text-2xl my-auto pl-4">{creator}</h1>
+          </Link>
         </div>
       </div>
       <Image
@@ -31,10 +39,15 @@ const UpdateCard = ({
         height={500}
       />
       <div className="h-[200px]">
-        //! Center this better
+        {/* //! Center this better */}
         <div className="flex w-fit mx-auto">
-          <button className="mx-3">
-            <Image src={"./images/like-button.svg"} width={50} height={50} />
+          <button className="mx-3 fill-void-400">
+            <Image
+              src={"./images/like-button.svg"}
+              className=""
+              width={50}
+              height={50}
+            />
           </button>
           <h1 className=" font-semibold text-xl border border-t-0 border-l-0 border-r-0 w-fit mx-auto mb-3">
             {title}

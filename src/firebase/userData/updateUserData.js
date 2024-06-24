@@ -8,15 +8,15 @@ const auth = getAuth(firebase_app);
 
 // * This function should never return anything.
 export default async function updateUserData(
-  name = auth.currentUser.displayName,
   profilePic,
   bio, // call the addUserDataFunction
   tags
 ) {
+  if (auth.currentUser === null) return;
   // * Get username from database, see if new one is orignal
-
+  // bio = bio | "Empty biography, tell us something about yourself!";
   // * Upload new profile pic to photourl
-  console.log(profilePic);
+  console.log(bio);
 
   try {
     await updateProfile(auth.currentUser, {
@@ -28,19 +28,18 @@ export default async function updateUserData(
   }
 
   // * If bio is not empty Update biography from userdata
-  if (bio != "") {
-    console.log("trying to push bio");
 
-    try {
-      console.log("updating bio...");
-      await writeToFirstore(bio).then(
-        function () {
-          console.log("updated profile");
-        }.catch(function (error) {
-          console.log(error);
-        })
-      );
-    } catch (error) {}
-  }
+  console.log("trying to push bio");
+
+  try {
+    console.log("updating bio...");
+    await writeToFirstore(bio, profilePic).then(
+      function () {
+        console.log("updated profile");
+      }.catch(function (error) {
+        console.log(error);
+      })
+    );
+  } catch (error) {}
   // * Add / Delete tags from userdata
 }

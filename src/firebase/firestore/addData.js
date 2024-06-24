@@ -6,15 +6,12 @@ import {
   updateDoc,
   arrayUnion,
 } from "firebase/firestore";
-//! This broke the original add document, restore it
 const db = getFirestore(firebase_app);
 export default async function updateDocument(collection, id, data) {
   let result = null;
   let error = null;
-  // console.info(collection, id, data);
-  const docRef = doc(db, "posts", "posts");
   try {
-    result = await updateDoc(docRef, { posts: arrayUnion(data) });
+    result = await setDoc(doc(db, collection, id), data, { merge: true });
     console.log(result);
   } catch (e) {
     error = e;

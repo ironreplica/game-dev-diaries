@@ -11,42 +11,72 @@ import {
   GeoPoint,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-// import { useUser } from "../auth/useUser";
 
-// const addData = () => {
-//   const { user } = useUser();
-//   sendData();
-// }
+// * Creating firestore user document
+export const createToFirestore = (userDisplayName, uid) => {
+  const db = getFirestore(firebase_app);
+  const date = new Date();
+  let day = date.getDate();
+  let month = date.getMonth() + 1;
+  let year = date.getFullYear();
+  // const auth = getAuth(firebase_app);
 
+  const sendData = async () => {
+    try {
+      console.log("creating user data document");
+      const userDoc = doc(db, "users", uid);
+      await setDoc(userDoc, {
+        biography: "Empty biography, tell us something about yourself!",
+        contact_email: "contact-email@noreply.com",
+        followed_users: [],
+        followers_array: [],
+        categories: [],
+        time_stamp: `${month}/${day}/${year}`,
+        profileURL:
+          "https://firebasestorage.googleapis.com/v0/b/game-dev-diaries.appspot.com/o/files%2Fblank-profile.png?alt=media&token=720a666a-3218-4650-8cfe-c17127bbf28a",
+        username: userDisplayName,
+      });
+      console.log("complete!");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  sendData();
+};
+
+// * Updating firestore user document
 export const writeToFirstore = (
   bio,
+  profilePicURL,
   contactEmail,
   following,
   categoryTags,
   followers,
-  posts
+  posts,
+  userDisplayName
 ) => {
   const db = getFirestore(firebase_app);
 
   const auth = getAuth(firebase_app);
-  if (auth.currentUser === null) return;
+  // if (auth.currentUser === null) return;
   const user = auth.currentUser;
 
-  // TODO: Add a call to the db, dont pass in dynamic data like followers and posts.
   bio = bio || "Empty Bio...";
+  // console.log(auth.currentUser.profileURL);
+  profilePicURL = profilePicURL || auth.currentUser.photoURL;
   contactEmail = contactEmail || "No Contact";
   following = following || [];
   categoryTags = categoryTags || [];
   followers = followers || [];
   posts = posts || 0;
+  userDisplayName = user.displayName;
   // const { user } = useUser();
-
   const sendData = async () => {
     try {
       console.log("sending data...");
       const userDoc = doc(db, "users", user.uid);
       const docSnap = await getDoc(userDoc);
-      if (docSnap.exists()) {
+      if (docSnap.exists() && auth.currentUser != null) {
         // * If data ALREADY exists
         const newData = {
           biography: bio,
@@ -54,22 +84,25 @@ export const writeToFirstore = (
           followed_users: following,
           followers_array: followers,
           categories: categoryTags,
-          time_stamp: Date.now(),
+          profileURL: profilePicURL,
         };
         await updateDoc(userDoc, newData);
+        console.log(newData.profileURL);
         alert("data successfully pushed.");
       } else if (!docSnap.exists()) {
         // * If there is no user data
-        console.log("setting doc");
+        console.error("wrong function");
 
-        await setDoc(userDoc, {
-          biography: bio,
-          contact_email: contactEmail,
-          followed_users: following,
-          followers_array: followers,
-          categories: categoryTags,
-          time_stamp: Date.now(),
-        });
+        // await setDoc(userDoc, {
+        //   biography: bio,
+        //   contact_email: contactEmail,
+        //   followed_users: following,
+        //   followers_array: followers,
+        //   categories: categoryTags,
+        //   time_stamp: Date.now(),
+        //   profileURL: profilePicURL,
+        //   username: userDisplayName,
+        // });
       }
       alert("data successfully pushed.");
     } catch (error) {
@@ -79,20 +112,3 @@ export const writeToFirstore = (
   };
   sendData();
 };
-
-// export default function addData() {
-//   const { user } = useUser();
-//   let result = null;
-//   let error = null;
-
-//   try {
-//     const userDoc = doc(db, collection, user.id);
-//     result = setDoc(userDoc, {
-//       string_data: "test!",
-//     });
-//     alert("data sent!");
-//   } catch (e) {
-//     error = e;
-//   }
-//   return { result, error };
-// }

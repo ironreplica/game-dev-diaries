@@ -10,14 +10,20 @@ import updateDocument from "../../firebase/firestore/updateDocument";
 // Pass in image, date modified and creator and creator profile picture
 const NewUpdateCard = () => {
   const db = getFirestore(firebase_app);
+  const [profileURL, setProfileURL] = useState(
+    "https://firebasestorage.googleapis.com/v0/b/game-dev-diaries.appspot.com/o/files%2Fblank-profile.png?alt=media&token=720a666a-3218-4650-8cfe-c17127bbf28a"
+  );
 
   const date = new Date();
   const [imgUrl, setImgUrl] = useState("/images/no-image.svg");
 
-  //   useEffect(() => {
-  //     // update when an image is uploaded
-  //     setImgUrl();
-  //   }, []);
+  useEffect(() => {
+    if (auth.currentUser.photoURL === null) return;
+    setProfileURL(
+      // always will have one since your setting it to the blank picture
+      auth.currentUser.photoURL
+    );
+  }, []);
   let day = date.getDate();
   let month = date.getMonth() + 1;
   let year = date.getFullYear();
@@ -45,6 +51,7 @@ const NewUpdateCard = () => {
     e.preventDefault();
 
     var items = {
+      userID: auth.currentUser.uid,
       createdBy: auth.currentUser.displayName,
       createdByImage: auth.currentUser.photoURL,
       title: "empty",
@@ -94,11 +101,12 @@ const NewUpdateCard = () => {
           <div className="mx-auto flex flex-row text-center my-auto align-middle top-[50%]">
             <Image
               alt="profile_photo"
-              src={user.photoURL}
+              src={profileURL}
               width={60}
               height={60}
               className=" rounded-[50%]"
             />
+            {console.log(user)}
             <h1 className="align-middle text-2xl my-auto pl-4">
               {user.displayName}
             </h1>
