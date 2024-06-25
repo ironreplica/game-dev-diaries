@@ -1,5 +1,6 @@
 "use client";
 import firebase_app from "../config";
+import { useRouter } from "next/navigation";
 import {
   getFirestore,
   doc,
@@ -45,11 +46,61 @@ export const createToFirestore = (userDisplayName, uid) => {
 };
 
 // * Updating firestore user document
+export const followUser = (uid) => {
+  const db = getFirestore(firebase_app);
+
+  const auth = getAuth(firebase_app);
+  // if (auth.currentUser === null) return;
+  const user = auth.currentUser;
+  const sendData = async () => {
+    try {
+      //! THIS IS FOR FOLLOWING AND UNFOLLOWING USERS
+      const userDoc = doc(db, "users", user.uid);
+      const docSnap = await getDoc(userDoc); // Getting the user document
+
+      var curFollowedUsers = docSnap._document.data.value.mapValue.fields // Getting the array of followed users, if there isnt one, initialize a new array
+        .followed_users
+        ? docSnap._document.data.value.mapValue.fields.followed_users
+        : [];
+      console.log(curFollowedUsers.arrayValue.values[0]);
+      for (let i = 0; i < curFollowedUsers.arrayValue.values.length; i++) {
+        console.log(curFollowedUsers.arrayValue.values[i]);
+        // if (uid === curFollowedUsers[i].stringValue) {
+        //   console.log("exists!");
+        // }
+      }
+      // console.log(curFollowedUsers);
+
+      curFollowedUsers.arrayValue.values.push(uid);
+      // * Update the old array to match the new array
+      console.log(curFollowedUsers);
+
+      // var followedUsersArr = curFollowedUsers
+      //   ? curFollowedUsers.arrayValue.values
+      //   : [];
+      // console.log(curFollowedUsers.arrayValue.valuess);
+
+      // followedUsersArr.push({ uid });
+      if (docSnap.exists() && auth.currentUser != null) {
+        await updateDoc(userDoc, { followed_users: curFollowedUsers });
+      } else {
+        console.error(
+          "A user is not signed in, or your account is not setup correctly."
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  sendData();
+};
+
 export const writeToFirstore = (
   bio,
   profilePicURL,
-  contactEmail,
   following,
+
+  contactEmail,
   categoryTags,
   followers,
   posts,
@@ -88,7 +139,6 @@ export const writeToFirstore = (
         };
         await updateDoc(userDoc, newData);
         console.log(newData.profileURL);
-        alert("data successfully pushed.");
       } else if (!docSnap.exists()) {
         // * If there is no user data
         console.error("wrong function");
@@ -104,7 +154,7 @@ export const writeToFirstore = (
         //   username: userDisplayName,
         // });
       }
-      alert("data successfully pushed.");
+      alert("Successfully updated profile!");
     } catch (error) {
       console.log(error);
       alert(error);

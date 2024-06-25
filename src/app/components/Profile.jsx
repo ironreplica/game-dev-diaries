@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { getAuth } from "firebase/auth";
 import firebase_app from "../../firebase/config";
@@ -17,6 +18,8 @@ import EditableField from "../components/EditableField";
 const auth = getAuth(firebase_app);
 
 const Profile = () => {
+  const router = useRouter();
+
   const [profileURL, setProfileURL] = useState(
     "https://firebasestorage.googleapis.com/v0/b/game-dev-diaries.appspot.com/o/files%2Fblank-profile.png?alt=media&token=720a666a-3218-4650-8cfe-c17127bbf28a"
   ); // get profile url
@@ -73,16 +76,17 @@ const Profile = () => {
       formData.push(object);
     }
     // * If there is a new bio
+    //! BIO only updates when its submitted twice.
     if (formData.find((o) => o.type === "textarea")) {
       const bioText = formData.find((o) => o.type === "textarea").value;
-      setUserBio(bioText);
-      console.log(userBio);
+      // setUserBio(await bioText);
+      await submission(fileURL, bioText);
     }
     submission();
 
-    async function submission() {
+    async function submission(fileURL, bioTxt) {
       // console.log(fileURL);
-      await updateUserData(fileURL, userBio);
+      await updateUserData(fileURL, bioTxt).then(() => {});
     }
   };
 

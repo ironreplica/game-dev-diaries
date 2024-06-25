@@ -7,7 +7,6 @@ export default async function getDocument(collection, id) {
 
   let result = null;
   let error = null;
-  console.log("getting doc");
   try {
     result = await getDoc(docRef);
   } catch (e) {

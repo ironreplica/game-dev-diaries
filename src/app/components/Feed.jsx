@@ -2,51 +2,7 @@
 import React, { useEffect, useState } from "react";
 import UpdateCard from "./UpdateCard";
 import getData from "../../firebase/firestore/getData";
-
-//! Add Image for post, and creator profile picture, and post created time.
-const TestUpdate = [
-  {
-    creator: "Username",
-    title: "Fixed no clipping",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem laborum porro odio qui sapiente dolorum, nostrum facere explicabo minima recusandae. Voluptatibus aliquam dolorum in culpa hic vel quam molestiae optio!",
-  },
-  {
-    creator: "Username",
-
-    title: "Changed pixel art",
-    description:
-      "Lorem ipsum dolor sit amet consectetur Voluptatibus aliquam dolorum in culpa hic vel quam molestiae optio!",
-  },
-  {
-    creator: "Username",
-
-    title: "Game released on steam!",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem laborum porro odio qui sapiente dolorum, nostrum facere explicabo minima recusandae. Voluptatibus aliquam dolorum in culpa hic vel quam molestiae optio!",
-  },
-  {
-    creator: "Username",
-
-    title: "Solving an unsolvable bug",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem laborum porro odio qui sapiente dolorum, nostrum facere explicabo minima recusandae. Voluptatibus aliquam dolorum in culpa hic vel quam molestiae optio!",
-  },
-  {
-    creator: "Username",
-
-    title: "Broken Physics??",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem laborum porro odio qui sapiente Voluptatibus aliquam dolorum in culpa hic vel quam molestiae optio!",
-  },
-  {
-    creator: "Username",
-
-    title: "Cant Jump?",
-    description:
-      "Lorem consectetur adipisicing elit. Exercitationem laborum porro odio qui sapiente dolorum, nostrum facere explicabo minima recusandae. Voluptatibus aliquam dolorum in culpa hic vel quam molestiae optio!",
-  },
-];
+import getPosts from "../../firebase/firestore/getPosts";
 
 const Feed = () => {
   const [posts, setPosts] = useState([]);
@@ -54,13 +10,7 @@ const Feed = () => {
     getPostData();
   }, []);
   async function getPostData() {
-    const { result, error } = await getData("posts", "posts");
-    if (error) {
-      console.log(error);
-    } else if (result) {
-      //   console.log(result.data().posts);
-      setPosts(result.data().posts);
-    }
+    setPosts(await getPosts());
   }
   console.log(posts);
   // Get the array of posts from the database
@@ -87,6 +37,10 @@ const Feed = () => {
             createdDate={post.dateCreated}
           />
         ))}
+      </div>
+      <div className="mx-auto w-[50%] flex flex-row justify-between">
+        <button>Back</button>
+        <button>Forward</button>
       </div>
     </section>
   );
