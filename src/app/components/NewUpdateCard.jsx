@@ -88,7 +88,7 @@ const NewUpdateCard = () => {
     setImgUrl(await fileUrl);
   }
   return (
-    <div className="flex flex-col w-[500x] h-auto m-10  rounded text-center text-stark-50">
+    <div className="flex flex-col w-[500px] h-auto m-10 py-3 rounded text-center text-stark-50 bg-void-950 bg-opacity-50">
       <form onSubmit={submitPost}>
         <input
           id="dropzone-file"
@@ -124,11 +124,11 @@ const NewUpdateCard = () => {
         <div className="h-[200px]">
           <h1 className=" font-semibold text-xl border border-t-0 border-l-0 border-r-0 w-fit mx-auto mb-3">
             <EditableField itemId="title">
-              <h1>New Devlog</h1>
+              <h1>Title here</h1>
             </EditableField>
           </h1>
           <EditableField>
-            <p className="mx-auto text-xl">Description</p>
+            <p className="mx-auto text-xl ">Description here</p>
           </EditableField>
         </div>
         <div className="h-fit w-full">

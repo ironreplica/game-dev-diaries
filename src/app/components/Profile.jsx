@@ -91,7 +91,7 @@ const Profile = () => {
   };
 
   return (
-    <section className="w-full h-[97vh] bg-void-950 text-stark-50 ">
+    <section className="w-full h-[90.5vh] bg-void-950 text-stark-50 ">
       <div className="pt-[55px] text-center flex flex-col text-2xl">
         <h1>View Profile</h1>
         <form className="form" onSubmit={handleUploadSubmit}>

@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import UpdateCard from "./UpdateCard";
 import getData from "../../firebase/firestore/getData";
 import getPosts from "../../firebase/firestore/getPosts";
@@ -18,14 +19,14 @@ const Feed = () => {
   // Push to an array
   // Map the array
   return (
-    <section className=" w-[100%] h-[1500px]  bg-void-950 flex flex-col">
+    <section className=" w-[100%] h-fit pb-10 bg-void-950 flex flex-col">
       <div>
         <h1 className=" mx-auto text-center text-4xl tracking-tight pt-4 text-stark-50 pb-0 mb-0">
           Recent posts from our community
         </h1>
       </div>
       <div className="grid grid-cols-3 grid-rows-2">
-        {posts.map((post, index) => (
+        {posts.slice(0, 6).map((post, index) => (
           <UpdateCard
             creator={post.createdBy}
             link={post.userID}
@@ -39,7 +40,10 @@ const Feed = () => {
         ))}
       </div>
       <div className="mx-auto w-[50%] flex flex-row justify-between">
-        <button>Back</button>
+        <button>
+          Back
+          {/* <Image src={"http://www.w3.org/2000/svg"} width={100} height={100} /> */}
+        </button>
         <button>Forward</button>
       </div>
     </section>

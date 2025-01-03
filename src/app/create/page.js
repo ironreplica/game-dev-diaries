@@ -5,6 +5,7 @@ import { LogOut } from "../../context/AuthContext";
 import { useRouter } from "next/navigation";
 import Navbar from "../components/Navbar";
 import CreateDevlog from "../components/CreateDevlog";
+import Footer from "../components/Footer";
 
 //* Left off at communication with DB
 //  https://www.freecodecamp.org/news/create-full-stack-app-with-nextjs13-and-firebase/
@@ -20,6 +21,7 @@ export default function Create() {
     <main>
       <Navbar />
       <CreateDevlog />
+      <Footer />
     </main>
   );
 }

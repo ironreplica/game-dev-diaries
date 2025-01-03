@@ -45,8 +45,9 @@ const CreateDevlog = () => {
   }, [user]);
   return (
     <section className="flex flex-row">
-      <div className=" w-[100%] h-fit mx-auto bg-void-950 flex flex-col">
+      <div className=" w-[100%] h-[93.4vh] mx-auto bg-void-950 flex flex-col">
         <div className="w-fit mx-auto my-10">
+          {/* <h1>New Post</h1> */}
           <NewUpdateCard
             creator="user"
             title="new update"

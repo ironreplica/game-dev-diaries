@@ -47,7 +47,7 @@ const ExploreSection = () => {
     fetchTags();
   }, []);
   return (
-    <section className="w-full h-[1200px] bg-void-950 mt-[55px]">
+    <section className="w-full h-fit bg-void-950 mt-[55px]">
       <div className="flex flex-col w-full">
         <h1 className="mx-auto text-2xl font-semibold tracking-wider mt-5">
           Explore Devlogs

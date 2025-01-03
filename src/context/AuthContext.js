@@ -20,6 +20,7 @@ export const LogOut = () => {
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
+
   // This effect is ran whenever its rendered, due to the empty dependency array passed into the end of the function.
   React.useEffect(() => {
     // OnAuthStateChanged is an observer that is notices when theres changes to the user sign in state.

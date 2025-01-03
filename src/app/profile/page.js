@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import SignUpToday from "../components/SignUpToday";
 import Navbar from "../components/Navbar";
 import Profile from "../components/Profile";
+import Footer from "../components/Footer";
 
 const page = () => {
   const { user } = useAuthContext();
@@ -20,6 +21,7 @@ const page = () => {
     <main>
       <Navbar />;
       <Profile />
+      <Footer />
     </main>
   );
 };
